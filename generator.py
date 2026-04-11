@@ -1,17 +1,17 @@
 import base64
 import json
 
-# ─── FIXED CREDENTIALS ────────────────────────────────────────────────────────
-UUID         = "9c5adfa3-2920-49dd-9fef-9d2272922110"
-TROJAN_PASS  = "Infinity"
-SS_PASS      = "Limitless"
+# ─── FIXED CREDENTIALS (GoJo-Multiplexer / xray-multi) ───────────────────────
+UUID         = "00800d22-1f1f-425c-838f-f76a1d8504ec"
+TROJAN_PASS  = "00800d22-1f1f-425c-838f-f76a1d8504ec"
+SS_PASS      = "00800d22-1f1f-425c-838f-f76a1d8504ec"
 SS_METHOD    = "chacha20-ietf-poly1305"
 
 WS_PATHS = {
-    "vless"   : "/gojo/domain/expansion",
-    "vmess"   : "/gojo/hollow_technique/combine",
-    "trojan"  : "/gojo/infinite/six_eyes",
-    "ss"      : "/gojo/cursed_technique/combine",
+    "vless"  : "/vless-ws-gojo-4n1",
+    "vmess"  : "/vmess-ws-gojo-4n1",
+    "trojan" : "/trojan-ws-gojo-4n1",
+    "ss"     : "/ss-ws-gojo-4n1",
 }
 
 # ─── GENERATORS ───────────────────────────────────────────────────────────────
@@ -26,14 +26,14 @@ def gen_vless(host: str) -> str:
         f"&host={host}"
         f"&path={path}"
     )
-    return f"vless://{UUID}@{host}:443?{params}#Gojo-VLESS"
+    return f"vless://{UUID}@{host}:443?{params}#Gojo-VLESS-4n1"
 
 
 def gen_vmess(host: str) -> str:
     path = WS_PATHS["vmess"]
     config = {
         "v"    : "2",
-        "ps"   : "Gojo-VMess",
+        "ps"   : "Gojo-VMess-4n1",
         "add"  : host,
         "port" : "443",
         "id"   : UUID,
@@ -61,7 +61,7 @@ def gen_trojan(host: str) -> str:
         f"&host={host}"
         f"&path={path}"
     )
-    return f"trojan://{TROJAN_PASS}@{host}:443?{params}#Gojo-Trojan"
+    return f"trojan://{TROJAN_PASS}@{host}:443?{params}#Gojo-Trojan-4n1"
 
 
 def gen_ss(host: str) -> str:
@@ -71,19 +71,13 @@ def gen_ss(host: str) -> str:
         f"plugin=v2ray-plugin"
         f"&plugin-opts=server;tls;host={host};path={path}"
     )
-    return f"ss://{userinfo}@{host}:443?{params}#Gojo-SS"
+    return f"ss://{userinfo}@{host}:443?{params}#Gojo-SS-4n1"
 
 
 # ─── MAIN GENERATOR ───────────────────────────────────────────────────────────
 
 def generate_all(cloud_run_url: str) -> dict:
-    """
-    Input  : full Cloud Run URL (e.g. https://gojo-proxy-xxxx-uc.a.run.app)
-    Output : dict of all protocol links
-    """
-    # strip protocol prefix
     host = cloud_run_url.replace("https://", "").replace("http://", "").rstrip("/")
-
     return {
         "host"   : host,
         "vless"  : gen_vless(host),
@@ -101,7 +95,7 @@ def format_message(cloud_run_url: str) -> str:
 
     msg = (
         f"━━━━━━━━━━━━━━━━━━━━━━\n"
-        f"🔵 GOJO PROXY CONFIGS\n"
+        f"👁️ GOJO 4N1 CONFIGS\n"
         f"━━━━━━━━━━━━━━━━━━━━━━\n"
         f"🌐 Host: `{host}`\n\n"
 
@@ -126,5 +120,5 @@ def format_message(cloud_run_url: str) -> str:
 # ─── TEST ─────────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    test_url = "https://gojo-proxy-abcd1234-uc.a.run.app"
+    test_url = "https://xray-multi-abcd1234-uc.a.run.app"
     print(format_message(test_url))
